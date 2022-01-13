@@ -1,5 +1,6 @@
 #!/bin/sh
 . "$(dirname "$0")/_/husky.sh"
 
+curl https://raw.githubusercontent.com/Netfloex/Whatsapp/main/src/typings/SocketIO.ts -o src/typings/SocketIO.ts
 yarn typescript
 yarn lint
