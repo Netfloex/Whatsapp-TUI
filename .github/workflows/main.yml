@@ -14,6 +14,7 @@ jobs:
 
             - name: Build Baileys-MD
               run: yarn prepare
+              shell: bash
 
             - name: Check Typescript
               run: yarn typescript
