@@ -1,0 +1,1 @@
+/home/sam/projecten/Whatsapp/src/typings/SocketIO.ts

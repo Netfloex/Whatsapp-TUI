@@ -1,0 +1,25 @@
+{
+	"compilerOptions": {
+		"baseUrl": ".",
+		"esModuleInterop": true,
+		"incremental": true,
+		"module": "esnext",
+		"moduleResolution": "node",
+		"noEmit": true,
+		"outDir": "dist",
+		"paths": {
+			"@lib": ["src/lib"],
+			"@typings/*": ["src/typings/*"],
+			"@utils": ["src/utils"]
+		},
+		"skipLibCheck": true,
+		"strict": false,
+		"target": "ES5",
+		"typeRoots": ["src/typings", "node_modules/@types"]
+	},
+	"ts-node": {
+		"compilerOptions": {
+			"module": "commonjs"
+		}
+	}
+}
