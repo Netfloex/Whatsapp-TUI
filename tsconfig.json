@@ -3,14 +3,16 @@
 		"baseUrl": ".",
 		"esModuleInterop": true,
 		"incremental": true,
+		"jsx": "react",
 		"module": "esnext",
 		"moduleResolution": "node",
 		"noEmit": true,
 		"outDir": "dist",
 		"paths": {
 			"@lib": ["src/lib"],
-			"@typings/*": ["src/typings/*"],
-			"@utils": ["src/utils"]
+			"@utils": ["src/utils"],
+			"@ui": ["src/ui"],
+			"@typings/*": ["src/typings/*"]
 		},
 		"skipLibCheck": true,
 		"strict": false,
