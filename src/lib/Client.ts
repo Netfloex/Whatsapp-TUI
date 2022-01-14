@@ -33,7 +33,21 @@ export class Client extends EventEmitter {
 		});
 
 		this.io.on("message", (messages) => {
-			console.log("new", messages[0]);
+			const uniqIds = [...new Set(messages.map((m) => m.chatJid))];
+			console.log("Received messages from the following chats", uniqIds);
+
+			messages.forEach((msg) => {
+				this.chats
+					.find((chat) => chat.id == msg.chatJid)
+					?.messages.unshift(msg);
+			});
+
+			this.emit("message.for", uniqIds);
 		});
+	}
+
+	destroy(): void {
+		this.io.disconnect();
+		this.removeAllListeners();
 	}
 }

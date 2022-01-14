@@ -1,3 +1,4 @@
+import { useChats } from "@hooks";
 import { ChatJson } from "@typings/SocketIO";
 import { Box, useFocusManager } from "ink";
 import SelectInput from "ink-select-input";
@@ -5,11 +6,11 @@ import type { Dispatch, FC, SetStateAction } from "react";
 import React from "react";
 
 export const ChatList: FC<{
-	chats: ChatJson[];
-	selectChat: Dispatch<SetStateAction<ChatJson>>;
+	selectChat: Dispatch<SetStateAction<ChatJson | undefined>>;
 	isFocused: boolean;
-}> = ({ chats, selectChat, isFocused }) => {
+}> = ({ selectChat, isFocused }) => {
 	const { focusNext } = useFocusManager();
+	const chats = useChats((chats) => selectChat(chats[0]));
 
 	return (
 		<Box width="20%" flexDirection="column" borderStyle="single">

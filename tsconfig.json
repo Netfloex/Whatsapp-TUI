@@ -1,6 +1,7 @@
 {
 	"compilerOptions": {
 		"baseUrl": ".",
+		"downlevelIteration": true,
 		"esModuleInterop": true,
 		"incremental": true,
 		"jsx": "react",
@@ -13,10 +14,11 @@
 			"@utils": ["src/utils"],
 			"@ui": ["src/ui"],
 			"@components": ["src/ui/components"],
+			"@hooks": ["src/ui/hooks"],
 			"@typings/*": ["src/typings/*"]
 		},
 		"skipLibCheck": true,
-		"strict": false,
+		"strict": true,
 		"target": "ES5",
 		"typeRoots": ["src/typings", "node_modules/@types"]
 	},

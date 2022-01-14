@@ -1,9 +1,10 @@
 import { Dashboard } from "@ui";
 import { render } from "ink";
 import React from "react";
+import { Provider } from "src/ui/Provider";
 
-import { Client } from "@lib";
-
-const client = new Client();
-
-render(<Dashboard client={client} />);
+render(
+	<Provider>
+		<Dashboard />
+	</Provider>,
+);
