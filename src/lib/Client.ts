@@ -16,18 +16,14 @@ export class Client extends EventEmitter {
 			},
 		});
 
-		this.io.on("connect", () => {
-			console.log("Connected");
-		});
 		this.io.onAny((ev, data) => {
 			console.log(`Event: ${ev}`, data);
 		});
 
-		this.io.on("disconnect", () => {
-			console.log("Disconnect");
-		});
-
 		this.io.on("connect_error", (err) => {
+			if (err.message == "Invalid Token") {
+				return console.log("Invalid Token");
+			}
 			console.log("Disconnnected", err);
 		});
 

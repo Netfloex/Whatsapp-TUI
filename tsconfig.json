@@ -12,6 +12,7 @@
 			"@lib": ["src/lib"],
 			"@utils": ["src/utils"],
 			"@ui": ["src/ui"],
+			"@components": ["src/ui/components"],
 			"@typings/*": ["src/typings/*"]
 		},
 		"skipLibCheck": true,

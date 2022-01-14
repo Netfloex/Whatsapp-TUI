@@ -1,5 +1,6 @@
-import { Box, Text } from "ink";
-import SelectInput from "ink-select-input";
+import { ChatList, SelectedChat } from "@components";
+import { ChatJson } from "@typings/SocketIO";
+import { Box, Text, useFocus } from "ink";
 import type { FC } from "react";
 import React, { useEffect, useState } from "react";
 
@@ -9,6 +10,8 @@ export const Dashboard: FC<{ client: Client }> = ({ client }) => {
 	const [connected, setConnected] = useState(client.io.connected);
 	const [chats, setChats] = useState(client.chats);
 	const [selectedChat, selectChat] = useState(client.chats[0]);
+
+	const { isFocused: chatSelectFocus } = useFocus({ id: "chatSelect" });
 
 	useEffect(() => {
 		const connected = (): void => setConnected(true);
@@ -24,43 +27,32 @@ export const Dashboard: FC<{ client: Client }> = ({ client }) => {
 	}, []);
 
 	useEffect(() => {
-		client.on("chats", setChats);
+		const updateChats = (chats: ChatJson[]): void => {
+			setChats(chats);
+			selectChat(chats[0]);
+		};
+
+		client.on("chats", updateChats);
 
 		return (): void => {
-			client.off("chats", setChats);
+			client.off("chats", updateChats);
 		};
 	});
 
-	console.log(chats);
-
 	return (
-		<Box width="100%" borderStyle="single">
-			<Box width="30%" borderStyle="single" flexDirection="column">
-				{connected ? (
-					<Text color={"green"}>Connected</Text>
-				) : (
-					<Text color={"red"}>Disconnected</Text>
-				)}
-				{/* {chats.slice(0, 30).map((chat) => (
-					<Text key={chat.id}>{chat.name}</Text>
-				))} */}
-				<SelectInput
-					items={chats.slice(0, 10).map((chat) => ({
-						label: chat.name,
-						value: chat,
-						key: chat.id,
-					}))}
-					onSelect={(item): void => selectChat(item.value)}
+		<Box width="100%" borderStyle="single" flexDirection="column">
+			{connected ? (
+				<Text color={"green"}>Connected</Text>
+			) : (
+				<Text color={"red"}>Disconnected</Text>
+			)}
+			<Box>
+				<ChatList
+					chats={chats}
+					isFocused={chatSelectFocus}
+					selectChat={selectChat}
 				/>
-			</Box>
-			<Box
-				flexGrow={1}
-				borderStyle="single"
-				flexDirection="column-reverse"
-			>
-				{selectedChat?.messages.slice(0, 10).map((msg) => (
-					<Text key={msg.id}>{msg.content}</Text>
-				))}
+				<SelectedChat chat={selectedChat} />
 			</Box>
 		</Box>
 	);

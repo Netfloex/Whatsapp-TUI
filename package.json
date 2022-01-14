@@ -6,7 +6,7 @@
 	"scripts": {
 		"start": "node .",
 		"build": "rollup -c",
-		"dev": "tsnd --respawn -T --rs --cls -r tsconfig-paths/register src",
+		"dev": "tsnd --respawn -T --cls --exit-child -r tsconfig-paths/register src/index.tsx",
 		"lint": "eslint .",
 		"prepare": "husky install; [ -f node_modules/@adiwajshing/baileys-md/src/index.ts ] && tsc -p node_modules/@adiwajshing/baileys-md; rm -rf node_modules/@adiwajshing/baileys-md/src",
 		"typescript": "tsc --noEmit"
@@ -32,6 +32,7 @@
 		"husky": "^7.0.4",
 		"ink": "^3.2.0",
 		"ink-select-input": "^4.2.1",
+		"ink-text-input": "^4.0.2",
 		"prettier": "^2.5.1",
 		"react": "^17.0.2",
 		"rollup": "^2.63.0",
