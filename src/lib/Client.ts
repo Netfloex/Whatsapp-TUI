@@ -35,7 +35,6 @@ export class Client extends EventEmitter {
 
 		this.io.emit("chats", (chats) => {
 			this.chats = chats;
-			console.log(chats);
 
 			this.emit("chats", chats);
 		});

@@ -2,14 +2,14 @@ import { useChats, useClient } from "@hooks";
 import { ChatJson, MessageJson } from "@typings/SocketIO";
 import { useEffect, useState } from "react";
 
-export const useMessages = (chat?: ChatJson): MessageJson[] | undefined => {
+export const useMessages = (chat?: ChatJson): MessageJson[] => {
 	const client = useClient();
-	const [messages, setMessages] = useState(chat?.messages);
+	const [messages, setMessages] = useState(chat?.messages ?? []);
 
 	const chats = useChats();
 
 	useEffect(() => {
-		setMessages(chat?.messages);
+		if (chat) setMessages(chat.messages);
 	}, [chats, chat]);
 
 	useEffect(() => {
