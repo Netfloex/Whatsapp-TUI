@@ -24,7 +24,7 @@ export const ChatList: FC<{
 					value: chat,
 					key: chat.id,
 				}))}
-				limit={rows - 5}
+				limit={rows - 7}
 				onSelect={focusNext}
 				onHighlight={(item): void => selectChat(item.value)}
 			/>
