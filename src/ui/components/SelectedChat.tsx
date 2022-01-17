@@ -15,7 +15,7 @@ export const SelectedChat: FC<{ chat?: ChatJson }> = ({ chat }) => {
 	let lastSenderId: string | undefined = "";
 
 	return (
-		<Box flexGrow={1} flexDirection="column" borderStyle="single">
+		<>
 			{React.Children.toArray(
 				messages
 					.slice(0, (rows - 8) / 3)
@@ -49,6 +49,6 @@ export const SelectedChat: FC<{ chat?: ChatJson }> = ({ chat }) => {
 			)}
 			<Spacer />
 			<MessageInput chat={chat} />
-		</Box>
+		</>
 	);
 };

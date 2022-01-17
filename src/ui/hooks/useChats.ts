@@ -14,7 +14,6 @@ export const useChats = (cb?: (chats: ChatJson[]) => void): ChatJson[] => {
 		};
 
 		client.on("chats", updateChats);
-
 		return (): void => {
 			client.off("chats", updateChats);
 		};

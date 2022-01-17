@@ -23,8 +23,8 @@ export class Client extends EventEmitter {
 			this.io.connect();
 		}
 
-		this.io.onAny((ev, data) => {
-			console.log(`Event: ${ev}`, data);
+		this.io.onAny((ev) => {
+			console.log(`Event: ${ev}`);
 		});
 
 		this.io.on("connect_error", (err) => {

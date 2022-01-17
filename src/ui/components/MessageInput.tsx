@@ -10,16 +10,16 @@ export const MessageInput: FC<{ chat: ChatJson }> = ({ chat }) => {
 
 	const [composedMessage, setComposed] = useState("");
 
-	const { isFocused: messageInputFocus } = useFocus({
+	const { isFocused } = useFocus({
 		id: "messageInput",
 		autoFocus: true,
 	});
 
 	return (
-		<Box borderStyle="single">
+		<Box borderStyle="single" borderColor={isFocused ? "blue" : undefined}>
 			<TextInput
 				value={composedMessage}
-				focus={messageInputFocus}
+				focus={isFocused}
 				onChange={setComposed}
 				onSubmit={(text): void => {
 					setComposed("");

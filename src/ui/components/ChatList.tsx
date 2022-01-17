@@ -1,6 +1,6 @@
 import { useChats } from "@hooks";
 import { ChatJson } from "@typings/SocketIO";
-import { Box, useFocusManager } from "ink";
+import { Text, useFocusManager } from "ink";
 import SelectInput from "ink-select-input";
 import useStdoutDimensions from "ink-use-stdout-dimensions";
 import type { Dispatch, FC, SetStateAction } from "react";
@@ -16,18 +16,24 @@ export const ChatList: FC<{
 	const [, rows] = useStdoutDimensions();
 
 	return (
-		<Box width="20%" flexDirection="column" borderStyle="single">
-			<SelectInput
-				isFocused={isFocused}
-				items={chats.map((chat) => ({
-					label: chat.name,
-					value: chat,
-					key: chat.id,
-				}))}
-				limit={rows - 7}
-				onSelect={focusNext}
-				onHighlight={(item): void => selectChat(item.value)}
-			/>
-		</Box>
+		<SelectInput
+			isFocused={isFocused}
+			items={chats.map((chat) => ({
+				label: chat.name,
+				value: chat,
+				key: chat.id,
+			}))}
+			// indicatorComponent={({ isSelected, children }) => (
+			// 	<Text>{children}ewa</Text>
+			// )}
+			itemComponent={({ isSelected, label }): JSX.Element => (
+				<Text color={isSelected && isFocused ? "blue" : undefined}>
+					{label}
+				</Text>
+			)}
+			limit={rows - 7}
+			onSelect={focusNext}
+			onHighlight={(item): void => selectChat(item.value)}
+		/>
 	);
 };
