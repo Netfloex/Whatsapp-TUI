@@ -2,7 +2,7 @@ import { useClient } from "@hooks";
 import { ChatJson } from "@typings/SocketIO";
 import { useEffect, useState } from "react";
 
-export const useChats = (cb?: (chats: ChatJson[]) => void): ChatJson[] => {
+export const useChats = (): ChatJson[] => {
 	const client = useClient();
 
 	const [chats, setChats] = useState(client.chats);
@@ -10,12 +10,26 @@ export const useChats = (cb?: (chats: ChatJson[]) => void): ChatJson[] => {
 	useEffect(() => {
 		const updateChats = (chats: ChatJson[]): void => {
 			setChats(chats);
-			cb?.(chats);
 		};
+
+		const resortChats = (): void => {
+			setChats((chats) =>
+				chats
+					.sort(
+						(a, b) =>
+							new Date(b.messages[0].time).valueOf() -
+							new Date(a.messages[0].time).valueOf(),
+					)
+					.slice(),
+			);
+		};
+
+		client.on("message.for", resortChats);
 
 		client.on("chats", updateChats);
 		return (): void => {
 			client.off("chats", updateChats);
+			client.off("message.for", resortChats);
 		};
 	}, []);
 

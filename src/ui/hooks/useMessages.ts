@@ -18,7 +18,9 @@ export const useMessages = (chat?: ChatJson): MessageJson[] => {
 				setMessages(chat.messages.slice());
 			}
 		};
+
 		client.on("message.for", updateMessages);
+
 		return (): void => {
 			client.off("message.for", updateMessages);
 		};

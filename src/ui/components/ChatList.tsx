@@ -11,7 +11,7 @@ export const ChatList: FC<{
 	isFocused: boolean;
 }> = ({ selectChat, isFocused }) => {
 	const { focusNext } = useFocusManager();
-	const chats = useChats((chats) => selectChat(chats[0]));
+	const chats = useChats();
 
 	const [, rows] = useStdoutDimensions();
 
@@ -23,9 +23,6 @@ export const ChatList: FC<{
 				value: chat,
 				key: chat.id,
 			}))}
-			// indicatorComponent={({ isSelected, children }) => (
-			// 	<Text>{children}ewa</Text>
-			// )}
 			itemComponent={({ isSelected, label }): JSX.Element => (
 				<Text color={isSelected && isFocused ? "blue" : undefined}>
 					{label}
