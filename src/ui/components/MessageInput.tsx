@@ -23,10 +23,12 @@ export const MessageInput: FC<{ chat: ChatJson }> = ({ chat }) => {
 				onChange={setComposed}
 				onSubmit={(text): void => {
 					setComposed("");
-					client.io.emit("message.send", {
-						jid: chat.id,
-						text,
-					});
+					if (text) {
+						client.io.emit("message.send", {
+							jid: chat.id,
+							text,
+						});
+					}
 				}}
 				placeholder={`Send a message to ${chat.name}`}
 			/>

@@ -1,17 +1,15 @@
-import { ChatList, SelectedChat, Connection } from "@components";
+import { ChatList, Connection, SelectedChat } from "@components";
 import { useChats, useConnection } from "@hooks";
 import { ConnectionState } from "@typings/ConnectionState";
 import { ChatJson } from "@typings/SocketIO";
-import { Box, Text, useFocus } from "ink";
+import { Box, Text } from "ink";
 import React, { FC, useEffect, useState } from "react";
 
 export const Dashboard: FC = () => {
-	const [selectedChat, selectChat] = useState<ChatJson | undefined>();
 	const chats = useChats();
-
-	const { isFocused: chatSelectFocus } = useFocus({ id: "chatSelect" });
-
 	const connection = useConnection();
+
+	const [selectedChat, selectChat] = useState<ChatJson | undefined>();
 
 	useEffect(() => {
 		if (!selectedChat) selectChat(chats[0]);
@@ -31,15 +29,10 @@ export const Dashboard: FC = () => {
 			</Box>
 			{connection == ConnectionState.connected && chats.length != 0 && (
 				<Box>
-					<Box
-						width="20%"
-						flexDirection="column"
-						borderStyle="single"
-						borderColor={chatSelectFocus ? "blue" : undefined}
-					>
+					<Box width="20%" flexDirection="column-reverse">
 						<ChatList
-							isFocused={chatSelectFocus}
 							selectChat={selectChat}
+							selectedChat={selectedChat}
 						/>
 					</Box>
 					<Box
