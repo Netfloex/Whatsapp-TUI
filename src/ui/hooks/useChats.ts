@@ -17,19 +17,18 @@ export const useChats = (): ChatJson[] => {
 				chats
 					.sort(
 						(a, b) =>
-							new Date(b.messages[0].time).valueOf() -
-							new Date(a.messages[0].time).valueOf(),
+							new Date(b.time).valueOf() -
+							new Date(a.time).valueOf(),
 					)
 					.slice(),
 			);
 		};
 
-		client.on("message.for", resortChats);
-
+		client.on("chats.resort", resortChats);
 		client.on("chats", updateChats);
 		return (): void => {
 			client.off("chats", updateChats);
-			client.off("message.for", resortChats);
+			client.off("chats.resort", resortChats);
 		};
 	}, []);
 

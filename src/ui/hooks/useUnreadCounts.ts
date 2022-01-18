@@ -13,8 +13,6 @@ export const useUnreadCounts = (): UnreadCounts => {
 			setUnreads((oldCount) => {
 				chats.forEach((chat) => {
 					if (chat.id && chat.unreadCount) {
-						console.log(chat.unreadCount);
-
 						oldCount[chat.id] = chat.unreadCount;
 					}
 				});
