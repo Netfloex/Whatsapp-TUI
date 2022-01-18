@@ -69,7 +69,7 @@ export const ChatList: FC<{
 							>
 								{chat.name}
 							</Text>
-							{unreadCount && (
+							{unreadCount != 0 && (
 								<>
 									<Spacer />
 									<Text color="green" bold>

@@ -9,5 +9,4 @@ render(
 	<Provider>
 		<Dashboard />
 	</Provider>,
-	{ debug: true },
 );

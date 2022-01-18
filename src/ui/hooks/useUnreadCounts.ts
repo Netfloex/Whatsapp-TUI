@@ -1,5 +1,5 @@
+import { Chat } from "@adiwajshing/baileys-md";
 import { useClient } from "@hooks";
-import { MessageJson } from "@typings/SocketIO";
 import { useEffect, useState } from "react";
 
 type UnreadCounts = Record<string, number>;
@@ -9,23 +9,24 @@ export const useUnreadCounts = (): UnreadCounts => {
 	const [unreadCounts, setUnreads] = useState<UnreadCounts>({});
 
 	useEffect(() => {
-		const onMessage = (messages: MessageJson[]): void => {
+		const onUpdate = (chats: Partial<Chat>[]): void => {
 			setUnreads((oldCount) => {
-				messages.forEach((msg) => {
-					if (msg.chatId)
-						oldCount[msg.chatId] = msg.fromMe
-							? 0
-							: (oldCount[msg.chatId] ?? 0) + 1;
+				chats.forEach((chat) => {
+					if (chat.id && chat.unreadCount) {
+						console.log(chat.unreadCount);
+
+						oldCount[chat.id] = chat.unreadCount;
+					}
 				});
 
 				return { ...oldCount };
 			});
 		};
 
-		client.io.on("message", onMessage);
+		client.io.on("chats.update", onUpdate);
 
 		return (): void => {
-			client.io.off("message", onMessage);
+			client.io.off("chats.update", onUpdate);
 		};
 	}, []);
 
