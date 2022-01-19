@@ -7,7 +7,7 @@ import type { FC } from "react";
 import React from "react";
 
 export const ChatTitle: FC<{ selectedChat: ChatJson }> = ({ selectedChat }) => {
-	const presences = Object.values(usePresence(selectedChat));
+	const presence = usePresence(selectedChat);
 
 	return (
 		<Box borderStyle="single" flexGrow={1}>
@@ -18,20 +18,19 @@ export const ChatTitle: FC<{ selectedChat: ChatJson }> = ({ selectedChat }) => {
 				<>
 					<Text
 						color={
-							presences?.[0]?.lastKnownPresence == "available"
+							presence?.lastKnownPresence == "available"
 								? "green"
-								: presences?.[0]?.lastKnownPresence ==
-								  "composing"
+								: presence?.lastKnownPresence == "composing"
 								? "yellow"
 								: "gray"
 						}
 					>
 						{circleFilled}
 					</Text>
-					{presences?.[0]?.lastSeen && (
+					{presence?.lastSeen && (
 						<Text>
 							{DateTime.fromSeconds(
-								presences[0].lastSeen,
+								presence?.lastSeen,
 							).toLocaleString(
 								DateTime.DATETIME_MED_WITH_SECONDS,
 							)}

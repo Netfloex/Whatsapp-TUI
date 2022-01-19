@@ -67,16 +67,9 @@ export class Client extends EventEmitter {
 				let emitResort = false;
 				chats.forEach((chat) => {
 					const foundChat = this.chats.find((ch) => ch.id == chat.id);
-					console.log("f", foundChat);
 
 					if (foundChat) {
 						if (chat.conversationTimestamp) {
-							console.log(
-								foundChat.time,
-								DateTime.fromSeconds(
-									+chat.conversationTimestamp,
-								).toISO(),
-							);
 							foundChat.time = DateTime.fromSeconds(
 								+chat.conversationTimestamp,
 							).toISO();
