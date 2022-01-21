@@ -1,4 +1,4 @@
-import { MessageInput } from "@components";
+import { ContactName, MessageInput } from "@components";
 import { useMessages } from "@hooks";
 import { ChatJson } from "@typings/SocketIO";
 import { Box, Newline, Spacer, Text } from "ink";
@@ -22,8 +22,8 @@ export const SelectedChat: FC<{ chat?: ChatJson }> = ({ chat }) => {
 					.reverse()
 					.map((msg) => {
 						const isDifferent =
-							!lastSenderId || lastSenderId != msg.sender?.id;
-						lastSenderId = msg.sender?.id ?? undefined;
+							!lastSenderId || lastSenderId != msg.senderId;
+						lastSenderId = msg.senderId ?? undefined;
 
 						return (
 							<Box
@@ -35,8 +35,7 @@ export const SelectedChat: FC<{ chat?: ChatJson }> = ({ chat }) => {
 									{isDifferent && (
 										<Text bold={true}>
 											<Newline />
-											{msg.sender?.contactName ??
-												msg.sender?.pushname}
+											<ContactName id={msg.senderId} />
 											:
 											<Newline />
 										</Text>

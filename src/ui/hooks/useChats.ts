@@ -17,8 +17,8 @@ export const useChats = (): ChatJson[] => {
 				chats
 					.sort(
 						(a, b) =>
-							new Date(b.time).valueOf() -
-							new Date(a.time).valueOf(),
+							new Date(b.time!).valueOf() -
+							new Date(a.time!).valueOf(),
 					)
 					.slice(),
 			);

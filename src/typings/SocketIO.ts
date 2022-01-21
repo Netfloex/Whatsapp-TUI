@@ -1,26 +1,19 @@
-import type {
-	AnyMessageContent,
-	Chat,
-	PresenceData,
-	WAMessageContent,
-} from "@adiwajshing/baileys-md";
+import type { AnyMessageContent, Chat } from "@adiwajshing/baileys-md";
 
-export type PresenceUpdate = {
-	id: string;
-	presences: { [participant: string]: PresenceData };
-};
-
-export type Person = {
-	id?: string | null;
-	pushname?: string | null;
-	contactName?: string;
+export type DBContact = {
+	id?: string;
+	name?: string;
+	notify?: string;
+	isMe?: 0 | 1;
+	presence?: string;
+	presenceUpdated?: string;
 };
 
 export type MessageJson = {
-	id?: string;
-	time: string;
-	message?: WAMessageContent;
-	sender?: Person;
+	id: string;
+	time?: string;
+	message?: string;
+	senderId?: string;
 	fromMe?: boolean;
 	chatId?: string;
 
@@ -29,26 +22,19 @@ export type MessageJson = {
 
 export type ChatJson = {
 	id: string;
-	name: string;
-	time: string;
+	name?: string;
+	time?: string;
 	unreadCount?: number;
-	isGroup: boolean;
 };
 
 export interface ServerToClient {
 	message: (messages: MessageJson[]) => void;
-	presence: (presence: PresenceUpdate) => void;
+	presence: (presences: DBContact[]) => void;
 	"chats.update": (chats: Partial<Chat>[]) => void;
 }
 
 export interface ClientToServer {
 	chats: (reply: (chats: ChatJson[]) => void) => void;
-
-	"message.send": (
-		message: AnyMessageContent & {
-			jid: string;
-		},
-	) => void;
 
 	"messages.for": (
 		data: {
@@ -58,8 +44,16 @@ export interface ClientToServer {
 		reply: (messages: MessageJson[]) => void,
 	) => void;
 
+	contact: (chatId: string, reply: (contact: DBContact) => void) => void;
+
+	"message.send": (
+		message: AnyMessageContent & {
+			jid: string;
+		},
+	) => void;
+
 	"presence.subscribe": (
 		jid: string,
-		reply: (data: PresenceData | undefined) => void,
+		reply: (data: DBContact) => void,
 	) => void;
 }

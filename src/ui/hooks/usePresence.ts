@@ -1,30 +1,30 @@
-import { PresenceData } from "@adiwajshing/baileys-md";
+import { isJidUser } from "@adiwajshing/baileys-md";
 import { useClient } from "@hooks";
-import { ChatJson, PresenceUpdate } from "@typings/SocketIO";
+import { ChatJson, DBContact } from "@typings/SocketIO";
 import { useEffect, useState } from "react";
 
-export const usePresence = (chat: ChatJson): PresenceData | undefined => {
-	const [presences, setPresences] = useState<PresenceData | undefined>();
+export const usePresence = (chat: ChatJson): DBContact | undefined => {
+	const [presence, setPresence] = useState<DBContact | undefined>();
 	const client = useClient();
 
 	useEffect(() => {
-		const onPresence = ({ id, presences }: PresenceUpdate): void => {
-			if (id == chat.id) {
-				setPresences(presences[chat.id]);
-			}
+		const onPresences = (pres: DBContact[]): void => {
+			const presence = pres.find((pres) => pres.id == chat.id);
+
+			presence && setPresence(presence);
 		};
 
-		if (chat && !chat.isGroup)
-			client.io.emit("presence.subscribe", chat.id, (presences) => {
-				if (presences) setPresences(presences);
+		if (chat && isJidUser(chat.id))
+			client.io.emit("presence.subscribe", chat.id, (presence) => {
+				if (presence) setPresence(presence);
 			});
 
-		client.io.on("presence", onPresence);
+		client.io.on("presence", onPresences);
 
 		return (): void => {
-			client.io.off("presence", onPresence);
+			client.io.off("presence", onPresences);
 		};
-	}, [chat, setPresences]);
+	}, [chat, setPresence]);
 
-	return presences;
+	return presence;
 };

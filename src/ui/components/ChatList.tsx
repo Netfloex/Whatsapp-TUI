@@ -67,7 +67,7 @@ export const ChatList: FC<{
 									isSelected && isFocused ? "blue" : undefined
 								}
 							>
-								{chat.name}
+								{chat?.name ?? chat.id}
 							</Text>
 							{unreadCount != 0 && (
 								<>

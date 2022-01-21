@@ -1,6 +1,7 @@
 import {
 	ChatJson,
 	ClientToServer,
+	DBContact,
 	MessageJson,
 	ServerToClient,
 } from "@typings/SocketIO";
@@ -13,6 +14,7 @@ export class Client extends EventEmitter {
 
 	chats: ChatJson[] = [];
 	messages: Record<string, MessageJson[]> = {};
+	contacts: DBContact[] = [];
 
 	server = process.env.SERVER ?? "http://localhost:3000";
 	token = process.env.TOKEN;
@@ -78,11 +80,30 @@ export class Client extends EventEmitter {
 
 						if (chat.unreadCount)
 							foundChat.unreadCount = chat.unreadCount;
+
+						if (chat.name) {
+							foundChat.name = chat.name;
+							emitResort = true;
+						}
 					}
 				});
 
 				if (emitResort) this.emit("chats.resort");
 			});
+	}
+
+	getContact(id: string): Promise<DBContact | undefined> {
+		const cached = this.contacts.find((c) => c.id == id);
+		if (cached) return Promise.resolve(cached);
+
+		return new Promise<DBContact>((res) => {
+			this.io.emit("contact", id, (contact) => {
+				const cont = contact ?? { id };
+
+				this.contacts.push(cont);
+				res(cont);
+			});
+		});
 	}
 
 	destroy(): void {

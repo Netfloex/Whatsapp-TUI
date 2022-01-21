@@ -1,3 +1,4 @@
+import { isJidUser } from "@adiwajshing/baileys-md";
 import { usePresence } from "@hooks";
 import { ChatJson } from "@typings/SocketIO";
 import { circleFilled } from "figures";
@@ -12,27 +13,29 @@ export const ChatTitle: FC<{ selectedChat: ChatJson }> = ({ selectedChat }) => {
 	return (
 		<Box borderStyle="single" flexGrow={1}>
 			<Box marginRight={1}>
-				<Text>{selectedChat?.name}</Text>
+				<Text>{selectedChat?.name ?? selectedChat.id}</Text>
 			</Box>
-			{selectedChat.isGroup == false && (
+			{isJidUser(selectedChat.id) && (
 				<>
-					<Text
-						color={
-							presence?.lastKnownPresence == "available"
-								? "green"
-								: presence?.lastKnownPresence == "composing"
-								? "yellow"
-								: "gray"
-						}
-					>
-						{circleFilled}
-					</Text>
-					{presence?.lastSeen && (
+					<Box marginRight={1}>
+						<Text
+							color={
+								presence?.presence == "available"
+									? "green"
+									: presence?.presence == "composing"
+									? "yellow"
+									: "gray"
+							}
+						>
+							{circleFilled}
+						</Text>
+					</Box>
+					{presence?.presenceUpdated && (
 						<Text>
-							{DateTime.fromSeconds(
-								presence?.lastSeen,
+							{DateTime.fromISO(
+								presence.presenceUpdated,
 							).toLocaleString(
-								DateTime.DATETIME_MED_WITH_SECONDS,
+								DateTime.DATETIME_SHORT_WITH_SECONDS,
 							)}
 						</Text>
 					)}
