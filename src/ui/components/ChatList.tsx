@@ -38,7 +38,7 @@ export const ChatList: FC<{
 
 				if (key.return) focusNext();
 			},
-			[selectedChat, selectChat],
+			[chats, focusNext, selectedChat, selectChat],
 		),
 		{ isActive: isFocused },
 	);
@@ -54,7 +54,7 @@ export const ChatList: FC<{
 					const isSelected = chat == selectedChat;
 					const unreadCount = unreadCounts[chat.id];
 					return (
-						<Box>
+						<Box key={chat.id}>
 							<Box marginRight={1}>
 								{isSelected ? (
 									<Text color="blue">{pointer}</Text>

@@ -32,7 +32,7 @@ export const useConnection = (): ConnectionState => {
 			client.io.off("disconnect", disconnected);
 			client.io.off("connect_error", error);
 		};
-	}, []);
+	}, [client.io]);
 
 	return connected;
 };

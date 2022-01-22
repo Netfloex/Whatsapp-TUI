@@ -13,7 +13,7 @@ export const Dashboard: FC = () => {
 
 	useEffect(() => {
 		if (!selectedChat) selectChat(chats[0]);
-	}, [chats]);
+	}, [chats, selectedChat]);
 
 	return (
 		<Box width="100%" borderStyle="single" flexDirection="column">

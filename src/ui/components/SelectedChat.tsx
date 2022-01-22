@@ -27,6 +27,7 @@ export const SelectedChat: FC<{ chat?: ChatJson }> = ({ chat }) => {
 
 						return (
 							<Box
+								key={msg.id}
 								justifyContent={
 									msg.fromMe ? "flex-end" : undefined
 								}

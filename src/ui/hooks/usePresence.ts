@@ -24,7 +24,7 @@ export const usePresence = (chat: ChatJson): DBContact | undefined => {
 		return (): void => {
 			client.io.off("presence", onPresences);
 		};
-	}, [chat, setPresence]);
+	}, [client.io, chat, setPresence]);
 
 	return presence;
 };

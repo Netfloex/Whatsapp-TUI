@@ -26,7 +26,7 @@ export const useUnreadCounts = (): UnreadCounts => {
 		return (): void => {
 			client.io.off("chats.update", onUpdate);
 		};
-	}, []);
+	}, [client.io]);
 
 	return unreadCounts;
 };

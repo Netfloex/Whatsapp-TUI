@@ -2,7 +2,7 @@ import { useClient } from "@hooks";
 import { DBContact } from "@typings/SocketIO";
 import { useEffect, useState } from "react";
 
-export const useContact = (id: string): DBContact | undefined => {
+export const useContact = (id?: string): DBContact | undefined => {
 	const client = useClient();
 
 	const [contact, setContact] = useState(
@@ -10,8 +10,9 @@ export const useContact = (id: string): DBContact | undefined => {
 	);
 
 	useEffect(() => {
+		if (!id) return;
 		client.getContact(id).then(setContact);
-	}, [id]);
+	}, [client, id]);
 
 	return contact;
 };

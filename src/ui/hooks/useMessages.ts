@@ -31,7 +31,7 @@ export const useMessages = (chat?: ChatJson): MessageJson[] => {
 		return (): void => {
 			client.off("message.for", updateMessages);
 		};
-	}, [chat, setMessages]);
+	}, [client, chat, setMessages]);
 
 	return messages;
 };

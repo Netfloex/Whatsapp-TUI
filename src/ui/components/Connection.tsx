@@ -27,7 +27,7 @@ export const Connection: FC = () => {
 		case ConnectionState.serverdown:
 			return (
 				<Text color={"red"}>
-					Couldn't connect to the server: {client.server}
+					Couldn&apos;t connect to the server: {client.server}
 				</Text>
 			);
 		case ConnectionState.invalidToken:

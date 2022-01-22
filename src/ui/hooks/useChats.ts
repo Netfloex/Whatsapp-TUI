@@ -30,7 +30,7 @@ export const useChats = (): ChatJson[] => {
 			client.off("chats", updateChats);
 			client.off("chats.resort", resortChats);
 		};
-	}, []);
+	}, [client]);
 
 	return chats;
 };

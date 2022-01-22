@@ -12,7 +12,7 @@ export const Provider: FC = ({ children }) => {
 		return (): void => {
 			client.destroy();
 		};
-	}, []);
+	}, [client]);
 
 	const { Provider } = ClientContext;
 	return <Provider value={client}>{children}</Provider>;
