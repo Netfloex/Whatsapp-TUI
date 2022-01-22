@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 
 export const useConnection = (): ConnectionState => {
 	const client = useClient();
-	const [connected, setConnected] = useState<ConnectionState>(
+	const [connected, setConnected] = useState(
 		client.io.connected
 			? ConnectionState.connected
 			: ConnectionState.disconnected,

@@ -1,8 +1,8 @@
 import { useClient } from "@hooks";
 import { ChatJson } from "@typings/SocketIO";
-import { Text, Box, useFocus, useInput } from "ink";
+import { Box, Text, useFocus, useInput } from "ink";
 import TextInput from "ink-text-input";
-import React, { FC, useCallback, useEffect, useState } from "react";
+import React, { FC, useCallback, useState } from "react";
 
 export const MessageInput: FC<{ chat: ChatJson }> = ({ chat }) => {
 	const client = useClient();
@@ -14,10 +14,10 @@ export const MessageInput: FC<{ chat: ChatJson }> = ({ chat }) => {
 		id: "messageInput",
 		autoFocus: true,
 	});
-
-	useEffect(() => {
-		client.suggestMessage(composedMessage).then(suggest);
-	}, [client, composedMessage]);
+	const onChange = (value: string): void => {
+		setComposed(value);
+		client.suggestMessage(value).then(suggest);
+	};
 
 	useInput(
 		useCallback(
@@ -36,7 +36,7 @@ export const MessageInput: FC<{ chat: ChatJson }> = ({ chat }) => {
 			<TextInput
 				value={composedMessage}
 				focus={isFocused}
-				onChange={setComposed}
+				onChange={onChange}
 				onSubmit={(text): void => {
 					setComposed("");
 					if (text) {
