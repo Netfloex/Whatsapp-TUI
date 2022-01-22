@@ -15,6 +15,7 @@ export class Client extends EventEmitter {
 	chats: ChatJson[] = [];
 	messages: Record<string, MessageJson[]> = {};
 	contacts: DBContact[] = [];
+	private suggestions: Record<string, string> = {};
 
 	server = process.env.SERVER ?? "http://localhost:3000";
 	token = process.env.TOKEN;
@@ -102,6 +103,18 @@ export class Client extends EventEmitter {
 
 				this.contacts.push(cont);
 				res(cont);
+			});
+		});
+	}
+
+	suggestMessage(content: string): Promise<string> {
+		return new Promise((res) => {
+			if (!content) return "";
+			if (content in this.suggestions) return this.suggestions[content];
+
+			this.io.emit("message.suggest", content, (message) => {
+				this.suggestions[content] = message?.content ?? "";
+				res(message?.content ?? "");
 			});
 		});
 	}

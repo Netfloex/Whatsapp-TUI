@@ -1,19 +1,35 @@
 import { useClient } from "@hooks";
 import { ChatJson } from "@typings/SocketIO";
-import { Box, useFocus } from "ink";
+import { Text, Box, useFocus, useInput } from "ink";
 import TextInput from "ink-text-input";
-import type { FC } from "react";
-import React, { useState } from "react";
+import React, { FC, useCallback, useEffect, useState } from "react";
 
 export const MessageInput: FC<{ chat: ChatJson }> = ({ chat }) => {
 	const client = useClient();
 
 	const [composedMessage, setComposed] = useState("");
+	const [suggestedMessage, suggest] = useState("");
 
 	const { isFocused } = useFocus({
 		id: "messageInput",
 		autoFocus: true,
 	});
+
+	useEffect(() => {
+		client.suggestMessage(composedMessage).then(suggest);
+	}, [client, composedMessage]);
+
+	useInput(
+		useCallback(
+			(input, key) => {
+				if (key.rightArrow || (key.ctrl && input == "`")) {
+					setComposed(suggestedMessage);
+				}
+			},
+			[suggestedMessage],
+		),
+		{ isActive: isFocused },
+	);
 
 	return (
 		<Box borderStyle="single" borderColor={isFocused ? "blue" : undefined}>
@@ -32,6 +48,9 @@ export const MessageInput: FC<{ chat: ChatJson }> = ({ chat }) => {
 				}}
 				placeholder={`Send a message to ${chat.name}`}
 			/>
+			<Text dimColor>
+				{suggestedMessage?.slice(composedMessage.length + 1)}
+			</Text>
 		</Box>
 	);
 };
