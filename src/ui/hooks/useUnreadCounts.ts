@@ -1,4 +1,4 @@
-import { Chat } from "@adiwajshing/baileys-md";
+import { Chat } from "@adiwajshing/baileys";
 import { useClient } from "@hooks";
 import { useEffect, useState } from "react";
 

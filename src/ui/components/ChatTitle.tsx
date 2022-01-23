@@ -1,4 +1,4 @@
-import { isJidUser } from "@adiwajshing/baileys-md";
+import { isJidUser } from "@adiwajshing/baileys";
 import { usePresence } from "@hooks";
 import { ChatJson } from "@typings/SocketIO";
 import { circleFilled } from "figures";

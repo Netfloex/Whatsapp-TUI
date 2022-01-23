@@ -1,4 +1,4 @@
-import { isJidUser } from "@adiwajshing/baileys-md";
+import { isJidUser } from "@adiwajshing/baileys";
 import { useClient } from "@hooks";
 import { ChatJson, DBContact } from "@typings/SocketIO";
 import { useEffect, useState } from "react";
