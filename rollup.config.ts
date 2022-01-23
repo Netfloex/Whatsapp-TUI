@@ -18,7 +18,7 @@ export default defineConfig({
 		generatedCode: "es5",
 		plugins: dev ? [] : [terser()],
 	},
-	external: [],
+	external: ["qrcode-terminal"],
 	plugins: [
 		dev && run(),
 		json(),
@@ -52,6 +52,6 @@ export default defineConfig({
 				],
 			],
 		}),
-		commonjs(),
+		commonjs({ ignore: ["sharp", "jimp"] }),
 	],
 });
