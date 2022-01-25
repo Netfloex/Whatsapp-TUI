@@ -1,4 +1,8 @@
-import type { AnyMessageContent, Chat } from "@adiwajshing/baileys";
+import type {
+	AnyMessageContent,
+	Chat,
+	WAMessageStatus,
+} from "@adiwajshing/baileys";
 
 export type DBContact = {
 	id?: string;
@@ -16,7 +20,7 @@ export type MessageJson = {
 	senderId?: string;
 	fromMe?: 0 | 1;
 	chatId?: string;
-
+	status?: WAMessageStatus;
 	content?: string;
 };
 
@@ -31,6 +35,9 @@ export interface ServerToClient {
 	message: (messages: MessageJson[]) => void;
 	presence: (presences: DBContact[]) => void;
 	"chats.update": (chats: Partial<Chat>[]) => void;
+	"chats.unreadCount": (
+		chats: Required<Pick<ChatJson, "id" | "unreadCount">>[],
+	) => void;
 	qr: (qr: string) => void;
 }
 
@@ -45,7 +52,10 @@ export interface ClientToServer {
 		reply: (messages: MessageJson[]) => void,
 	) => void;
 
-	contact: (chatId: string, reply: (contact: DBContact) => void) => void;
+	contact: (
+		chatId: string,
+		reply: (contact: DBContact | undefined) => void,
+	) => void;
 
 	"message.send": (
 		message: AnyMessageContent & {
@@ -55,16 +65,16 @@ export interface ClientToServer {
 
 	"presence.subscribe": (
 		jid: string,
-		reply: (data: DBContact) => void,
+		reply: (data: DBContact | undefined) => void,
 	) => void;
 
-	"messages.search": (
-		where: {
-			content: string;
-			where?: Partial<MessageJson>;
-		},
-		reply: (messages: MessageJson[]) => void,
-	) => void;
+	// "messages.search": (
+	// 	where: {
+	// 		content: string;
+	// 		where?: Partial<MessageJson>;
+	// 	},
+	// 	reply: (messages: MessageJson[]) => void,
+	// ) => void;
 
 	"message.suggest": (
 		content: string,

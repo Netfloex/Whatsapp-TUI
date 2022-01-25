@@ -52,10 +52,6 @@ export class Client extends EventEmitter {
 		this.io
 			.on("message", (messages) => {
 				const uniqIds = [...new Set(messages.map((m) => m.chatId))];
-				console.log(
-					"Received messages from the following chats",
-					uniqIds,
-				);
 
 				messages.forEach((msg) => {
 					if (msg.chatId) {
