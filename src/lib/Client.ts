@@ -49,6 +49,10 @@ export class Client extends EventEmitter {
 			this.emit("chats", chats);
 		});
 
+		this.io.emit("contacts", (contacts) => {
+			this.contacts = contacts;
+		});
+
 		this.io
 			.on("message", (messages) => {
 				const uniqIds = [...new Set(messages.map((m) => m.chatId))];
