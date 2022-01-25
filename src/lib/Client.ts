@@ -86,14 +86,32 @@ export class Client extends EventEmitter {
 				});
 
 				if (emitResort) this.emit("chats.resort");
+			})
+			.on("chats.unreadCount", (chats) => {
+				chats.forEach(async (chat) => {
+					await this.getMessages(chat.id, true);
+					this.emit("message.for", [chat.id]);
+				});
 			});
 	}
 
-	getContact(id: string): Promise<DBContact | undefined> {
-		const cached = this.contacts.find((c) => c.id == id);
-		if (cached) return Promise.resolve(cached);
+	getMessages(chatId: string, noCache = false): Promise<MessageJson[]> {
+		return new Promise<MessageJson[]>((res) => {
+			if (chatId in this.messages && !noCache)
+				return res(this.messages[chatId]);
 
+			this.io.emit("messages.for", { chatId, length: 10 }, (messages) => {
+				this.messages[chatId] = messages ?? [];
+				res(messages ?? []);
+			});
+		});
+	}
+
+	getContact(id: string): Promise<DBContact | undefined> {
 		return new Promise<DBContact>((res) => {
+			const cached = this.contacts.find((c) => c.id == id);
+			if (cached) return cached;
+
 			this.io.emit("contact", id, (contact) => {
 				const cont = contact ?? { id };
 
@@ -105,8 +123,9 @@ export class Client extends EventEmitter {
 
 	suggestMessage(content: string): Promise<string> {
 		return new Promise((res) => {
-			if (!content) return "";
-			if (content in this.suggestions) return this.suggestions[content];
+			if (!content) return res("");
+			if (content in this.suggestions)
+				return res(this.suggestions[content]);
 
 			this.io.emit("message.suggest", content, (message) => {
 				this.suggestions[content] = message?.content ?? "";

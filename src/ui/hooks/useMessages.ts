@@ -12,20 +12,11 @@ export const useMessages = (chat?: ChatJson): MessageJson[] => {
 				setMessages(client.messages[chat.id].slice() ?? []);
 			}
 		};
+
 		if (chat) {
-			if (!client.messages[chat.id]?.length) {
-				client.io.emit(
-					"messages.for",
-					{ chatId: chat.id, length: 10 },
-					(messages) => {
-						setMessages(messages);
-						client.messages[chat.id] = messages;
-					},
-				);
-			} else {
-				setMessages(client.messages[chat.id] ?? []);
-			}
+			client.getMessages(chat.id).then(setMessages);
 		}
+
 		client.on("message.for", updateMessages);
 
 		return (): void => {
