@@ -50,7 +50,7 @@ export const SelectedChat: FC<{ chat?: ChatJson }> = ({ chat }) => {
 									<>: </>
 									{msg.content}
 									<> </>
-									{msg.fromMe && (
+									{msg.fromMe == 1 && (
 										<Text
 											color={
 												msg.status ==

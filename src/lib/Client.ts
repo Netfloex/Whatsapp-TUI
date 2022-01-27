@@ -5,7 +5,6 @@ import {
 	MessageJson,
 	ServerToClient,
 } from "@typings/SocketIO";
-import { DateTime } from "luxon";
 import { io, Socket } from "socket.io-client";
 import { EventEmitter } from "stream";
 
@@ -72,17 +71,15 @@ export class Client extends EventEmitter {
 					const foundChat = this.chats.find((ch) => ch.id == chat.id);
 
 					if (foundChat) {
-						if (chat.conversationTimestamp) {
-							foundChat.time = DateTime.fromSeconds(
-								+chat.conversationTimestamp,
-							).toISO();
+						if ("time" in chat) {
+							foundChat.time = chat.time;
 							emitResort = true;
 						}
 
-						if (chat.unreadCount)
+						if ("unreadCount" in chat)
 							foundChat.unreadCount = chat.unreadCount;
 
-						if (chat.name) {
+						if ("name" in chat) {
 							foundChat.name = chat.name;
 							emitResort = true;
 						}
@@ -91,11 +88,19 @@ export class Client extends EventEmitter {
 
 				if (emitResort) this.emit("chats.resort");
 			})
-			.on("chats.unreadCount", (chats) => {
-				chats.forEach(async (chat) => {
-					await this.getMessages(chat.id, true);
-					this.emit("message.for", [chat.id]);
-				});
+			.on("message.update", (messages) => {
+				messages
+					.filter((message) => message.chatId in this.messages)
+					.forEach((message) => {
+						const foundMsg = this.messages[message.chatId].find(
+							(msg) => msg.id == message.id,
+						);
+						if (foundMsg) foundMsg.status = message.status;
+					});
+
+				this.emit("message.for", [
+					...new Set(messages.map((msg) => msg.chatId)),
+				]);
 			});
 	}
 
